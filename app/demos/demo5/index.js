@@ -5,7 +5,8 @@ import {
 
 import Engine from 'utils/engine';
 import Stars from 'objects/Stars';
-import AnimatedText3D from 'objects/AnimatedText3D';
+// import AnimatedText3D from 'objects/AnimatedText3D';
+import { TimelineLite, Back } from 'gsap';
 import LineGenerator from 'objects/LineGenerator';
 
 import getRandomFloat from 'utils/getRandomFloat';
@@ -40,16 +41,6 @@ engine.addBloomEffect({
 }, 1);
 
 
-
-/**
- * * *******************
- * * TITLE
- * * *******************
- */
-const text = new AnimatedText3D('Boreal Sky', { color: '#FFFFFF', size: app.isMobile ? 0.08 : 0.1, wireframe: true, opacity: 1, });
-text.position.x -= text.basePosition * 0.5;
-engine.add(text);
-
 /**
  * * *******************
  * * STARS
@@ -73,12 +64,12 @@ const origin = new Vector3();
 const direction = new Vector3();
 const raycaster = new Raycaster();
 const geometry = new SphereBufferGeometry(radius, 32, 32, 0, 3.2, 4, 2.1);
-const material = new MeshBasicMaterial({ wireframe: true, visible: false });
+const material = new MeshBasicMaterial({ wireframe: false, visible: false });
 const sphere = new Mesh(geometry, material);
 engine.add(sphere);
 sphere.position.z = 2;
 
-const COLORS = ['#FFFAFF', '#0A2463', '#3E92CC', '#723bb7', '#efd28e', '#3f9d8c'].map((col) => new Color(col));
+const COLORS = ["#F8F8F8","#63030c","#F91F34","#BFBFBF","#F8F8F8","#F91F34"].map((col) => new Color(col));
 const STATIC_PROPS = {
   transformLineMethod: p => p,
 };
@@ -148,18 +139,18 @@ engine.add(lineGenerator);
  */
 // Show
 engine.start();
-const tlShow = new TimelineLite({ delay: 0.2, onStart: () => {
+const tlShow = new TimelineLite({ delay: 1, onStart: () => {
   lineGenerator.start();
 }});
 tlShow.to('.overlay', 2, { autoAlpha: 0 });
 tlShow.fromTo(engine.lookAt, 3, { y: -4 }, { y: 0, ease: Power3.easeOut }, '-=2');
-tlShow.add(text.show, '-=2');
+// tlShow.add(text.show, '-=2');
 
 // Hide
 app.onHide((onComplete) => {
   const tlHide = new TimelineLite();
   tlHide.to(engine.lookAt, 2, { y: -6, ease: Power3.easeInOut });
-  tlHide.add(text.hide, 0);
+  // tlHide.add(text.hide, 0);
   tlHide.add(lineGenerator.stop);
   tlHide.to('.overlay', 0.5, { autoAlpha: 1, onComplete }, '-=1.5');
 });
