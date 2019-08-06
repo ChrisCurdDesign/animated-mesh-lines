@@ -29,7 +29,7 @@ import './style.styl';
 
 @FullScreenInBackground
 @PostProcessing
-@HandleCameraOrbit({ x: 1, y: 1 }, 0.1)
+@HandleCameraOrbit({ x: 1, y: 1 }, 0.01)
 class CustomEngine extends Engine {}
 
 const engine = new CustomEngine();
@@ -105,7 +105,7 @@ class CustomLineGenerator extends LineGenerator {
 
     if (points.length === 0) return;
 
-    if (Math.random() > 0.5) {
+    if (Math.random() > 0.25) {
       // Low lines
       super.addLine({
         visibleLength: getRandomFloat(0.01, 0.2),
@@ -127,7 +127,7 @@ class CustomLineGenerator extends LineGenerator {
   }
 }
 const lineGenerator = new CustomLineGenerator({
-  frequency: 0.99,
+  frequency: 0.5,
 }, STATIC_PROPS);
 engine.add(lineGenerator);
 
@@ -139,18 +139,18 @@ engine.add(lineGenerator);
  */
 // Show
 engine.start();
-const tlShow = new TimelineLite({ delay: 1, onStart: () => {
+const tlShow = new TimelineLite({ delay: 0, onStart: () => {
   lineGenerator.start();
 }});
 tlShow.to('.overlay', 2, { autoAlpha: 0 });
-tlShow.fromTo(engine.lookAt, 3, { y: -4 }, { y: 0, ease: Power3.easeOut }, '-=2');
+// tlShow.fromTo(engine.lookAt, 0, { y: -4 }, { y: 0, ease: Power3.easeOut }, '-=2');
 // tlShow.add(text.show, '-=2');
 
 // Hide
-app.onHide((onComplete) => {
-  const tlHide = new TimelineLite();
-  tlHide.to(engine.lookAt, 2, { y: -6, ease: Power3.easeInOut });
-  // tlHide.add(text.hide, 0);
-  tlHide.add(lineGenerator.stop);
-  tlHide.to('.overlay', 0.5, { autoAlpha: 1, onComplete }, '-=1.5');
-});
+// app.onHide((onComplete) => {
+//   const tlHide = new TimelineLite();
+//   // tlHide.to(engine.lookAt, 2, { y: -6, ease: Power3.easeInOut });
+//   // tlHide.add(text.hide, 0);
+//   tlHide.add(lineGenerator.stop);
+//   tlHide.to('.overlay', 0.5, { autoAlpha: 1, onComplete }, '-=1.5');
+// });

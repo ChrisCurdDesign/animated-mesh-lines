@@ -33,7 +33,7 @@ class Star extends Mesh {
  * * *******************
  */
 export default class Starts extends Object3D {
-  constructor(nbrOfStars = 300) {
+  constructor(nbrOfStars = 200) {
     super();
 
     // TODO make instancied Stars
